@@ -14,3 +14,31 @@ In the mean time, have patience and a little faith—the whole point of this tut
         $ rails server
 
 1. View the welcome page: http://0.0.0.0:3000
+
+### Deploy
+
+1. \* [Create](https://signup.heroku.com/) and configure a new Heroku account
+
+1. \* Check to see if your system already has the [Heroku command-line client](https://devcenter.heroku.com/articles/heroku-cli) installed:
+
+        $ heroku --version
+
+1. \* Log in and add your SSH key:
+
+        $ heroku login
+        $ heroku keys:add
+
+1. Bundle without production gems (to prevent the local installation of any production gems)
+
+        $ bundle install --without production
+
+1. to create a place on the Heroku servers for the sample app to live:
+
+        $ heroku create
+
+1. to deploy the application:
+
+        $ git push heroku master
+
+NOTE:
+- `*` - ignore step if it was done before
