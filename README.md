@@ -1,21 +1,30 @@
-# A toy app
+# Ruby on Rails Tutorial sample application
 
-A toy demo app to show off some of the power of Rails.
-The purpose is to get a high-level overview of Ruby on Rails programming (and web development in general) by rapidly generating an application using scaffold generators, which create a large amount of functionality automatically.
+This is the sample application for
+[*Ruby on Rails Tutorial:
+Learn Web Development with Rails*](http://www.railstutorial.org/)
+by [Michael Hartl](http://www.michaelhartl.com/).
 
-As with the forthcoming sample application, the toy app will consist of users and their associated microposts (thus constituting a minimalist Twitter-style app).
-The functionality will be utterly under-developed, and many of the steps will seem like magic, but worry not: the full sample app will develop a similar application from the ground up starting in Chapter 3, and I will provide plentiful forward-references to later material.
-In the mean time, have patience and a little faith—the whole point of this tutorial is to take you beyond this superficial, scaffold-driven approach to achieve a deeper understanding of Rails.
+## Usage
 
-## Boot the app
+1. Clone the repo and install the needed gems:
 
-1. Run local webserver:
+        $ bundle install --without production
+
+1. Migrate the database:
+
+        $ rails db:migrate
+
+1. Run the test suite:
+
+        $ rails test
+
+1. Run the app in a local server:
 
         $ rails server
 
-1. View the welcome page: http://0.0.0.0:3000
 
-### Deploy
+## Deploy to Heroku
 
 1. \* [Create](https://signup.heroku.com/) and configure a new Heroku account
 
@@ -28,7 +37,7 @@ In the mean time, have patience and a little faith—the whole point of this tut
         $ heroku login
         $ heroku keys:add
 
-1. Bundle without production gems (to prevent the local installation of any production gems)
+1. Bundle without production gems (to prevent the local installation of any production gems):
 
         $ bundle install --without production
 
@@ -39,6 +48,10 @@ In the mean time, have patience and a little faith—the whole point of this tut
 1. to deploy the application:
 
         $ git push heroku master
+
+1. Migrate the production db:
+
+        $ heroku run rails db:migrate
 
 NOTE:
 - `*` - ignore step if it was done before
