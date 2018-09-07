@@ -19,6 +19,10 @@ by [Michael Hartl](http://www.michaelhartl.com/).
 
         $ rails test
 
+  - Run automated test runner:
+
+          $ bundle exec guard
+
 1. Run the app in a local server:
 
         $ rails server
@@ -37,15 +41,11 @@ by [Michael Hartl](http://www.michaelhartl.com/).
         $ heroku login
         $ heroku keys:add
 
-1. Bundle without production gems (to prevent the local installation of any production gems):
-
-        $ bundle install --without production
-
-1. to create a place on the Heroku servers for the sample app to live:
+1. Create a place on the Heroku servers for the app:
 
         $ heroku create
 
-1. to deploy the application:
+1. Deploy the app:
 
         $ git push heroku master
 
