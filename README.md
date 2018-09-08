@@ -19,9 +19,9 @@ by [Michael Hartl](http://www.michaelhartl.com/).
 
         $ rails test
 
-  - Run automated test runner:
+    1. Automatically & intelligently launch tests when you create or modify files:
 
-          $ bundle exec guard
+            $ bundle exec guard
 
 1. Run the app in a local server:
 
