@@ -15,5 +15,8 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     } }
     assert_template 'sessions/new'
     assert_not flash[:danger].empty?
+
+    get home_path
+    assert flash.empty?
   end
 end
