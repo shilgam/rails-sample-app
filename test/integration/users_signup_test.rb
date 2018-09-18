@@ -1,6 +1,11 @@
 require 'test_helper'
 
 class UsersSignupTest < ActionDispatch::IntegrationTest
+  test "signup form renders properly" do
+    get signup_path
+    assert_select 'form[action="/signup"]'
+  end
+
   test "signup with invalid info" do
     get signup_path
     assert_no_difference 'User.count' do
@@ -19,11 +24,6 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
       assert_select 'li:nth-child(3)', "Password confirmation doesn't match Password"
       assert_select 'li:nth-child(4)', "Password is too short (minimum is 6 characters)"
     end
-  end
-
-  test "Signup form renders properly" do
-    get signup_path
-    assert_select 'form[action="/signup"]'
   end
 
   test "signup with valid info" do
