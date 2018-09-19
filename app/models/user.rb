@@ -21,4 +21,9 @@ class User < ApplicationRecord
 
     BCrypt::Password.create(unencrypted_password, cost: cost)
   end
+
+  # Returns a random token
+  def self.new_token
+    SecureRandom.urlsafe_base64
+  end
 end
