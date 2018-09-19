@@ -18,6 +18,10 @@ class User < ApplicationRecord
     update_attribute(:remember_digest, User.digest(remember_token))
   end
 
+  def authenticated?(remember_token)
+    BCrypt::Password.new(remember_digest).is_password?(remember_token)
+  end
+
   class << self
     # Returns the hash digest of the given string
     def digest(unencrypted_password)
