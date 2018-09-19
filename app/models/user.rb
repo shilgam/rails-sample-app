@@ -12,26 +12,28 @@ class User < ApplicationRecord
   has_secure_password
   validates :password, presence: true, length: { minimum: 6 }
 
-  # Returns the hash digest of the given string
-  def self.digest(unencrypted_password)
-    cost =
-      if ActiveModel::SecurePassword.min_cost
-        BCrypt::Engine::MIN_COST
-      else
-        BCrypt::Engine.cost
-      end
-
-    BCrypt::Password.create(unencrypted_password, cost: cost)
-  end
-
-  # Returns a random token
-  def self.new_token
-    SecureRandom.urlsafe_base64
-  end
-
   # Remembers a user in the database for use in persistent sessions
   def remember
     self.remember_token = User.new_token
     update_attribute(:remember_digest, User.digest(remember_token))
+  end
+
+  class << self
+    # Returns the hash digest of the given string
+    def digest(unencrypted_password)
+      cost =
+        if ActiveModel::SecurePassword.min_cost
+          BCrypt::Engine::MIN_COST
+        else
+          BCrypt::Engine.cost
+        end
+
+      BCrypt::Password.create(unencrypted_password, cost: cost)
+    end
+
+    # Returns a random token
+    def new_token
+      SecureRandom.urlsafe_base64
+    end
   end
 end
