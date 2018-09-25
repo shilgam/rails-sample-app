@@ -15,6 +15,11 @@ by [Michael Hartl](http://www.michaelhartl.com/).
 
         $ rails db:migrate
 
+1. Create test data:
+
+        $ rails db:migrate:reset
+        $ rails db:seed
+
 1. Run the test suite:
 
         $ rails test
