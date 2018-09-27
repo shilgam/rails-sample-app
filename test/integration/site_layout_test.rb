@@ -2,7 +2,7 @@ require 'test_helper'
 
 class SiteLayoutTest < ActionDispatch::IntegrationTest
   def setup
-    @user = users(:michael)
+    @user = users(:non_admin_user)
   end
 
   test "layout links when logged out" do

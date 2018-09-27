@@ -2,8 +2,8 @@ require 'test_helper'
 
 class UsersControllerTest < ActionDispatch::IntegrationTest
   def setup
-    @user = users(:michael)
-    @other_user = users(:archer)
+    @user = users(:non_admin_user)
+    @other_user = users(:other_user)
   end
 
   test "should redirect index when not logged in" do
@@ -58,5 +58,20 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     @user.reload
     assert_equal new_name, @user.name
     assert_equal false, @user.admin
+  end
+
+  test "should redirect destroy when not logged in" do
+    assert_no_difference 'User.count' do
+      delete user_path(@user)
+    end
+    assert_redirected_to login_path
+  end
+
+  test "should redirect destroy when logged in as a non-admin" do
+    log_in_as @user
+    assert_no_difference 'User.count' do
+      delete user_path(@other_user)
+    end
+    assert_redirected_to root_path
   end
 end

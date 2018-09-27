@@ -1,13 +1,19 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-michael:
-  name: Michael Example
-  email: michael@example.com
+admin_user:
+  name: Admin User
+  email: admin_user@example.com
   password_digest: <%= User.digest('password') %>
+  admin: true
   # convention: all fixture users have the same password ('password')
-archer:
-  name: Sterling Archer
-  email: duchess@example.gov
+
+non_admin_user:
+  name: Non-admin User
+  email: non_admin_user@example.com
+  password_digest: <%= User.digest('password') %>
+
+other_user:
+  name: Other User
+  email: other-user@example.com
   password_digest: <%= User.digest('password') %>
 
 <% 30.times do |n| %>
