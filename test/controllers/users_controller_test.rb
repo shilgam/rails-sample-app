@@ -35,7 +35,6 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     log_in_as(@other_user)
     get edit_user_path(@user)
     assert_redirected_to root_url
-    # assert_select flash[:danger], "You do not have an access to this page."
   end
 
   test "should redirect update when logged in as wrong user" do
@@ -45,6 +44,19 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       email: @user.email
     } }
     assert_redirected_to root_url
-    # assert_select flash[:danger], "You do not have an access to this page."
+  end
+
+  test "the admin attribute is not editable through the web" do
+    log_in_as(@user)
+    new_name = 'New Username'
+
+    patch user_path(@user), params: { user: {
+      name: new_name,
+      email: @user.email,
+      admin: true
+    } }
+    @user.reload
+    assert_equal new_name, @user.name
+    assert_equal false, @user.admin
   end
 end
