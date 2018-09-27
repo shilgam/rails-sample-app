@@ -58,5 +58,12 @@ by [Michael Hartl](http://www.michaelhartl.com/).
 
         $ heroku run rails db:migrate
 
+1. Populate the production db with sample users (using the `pg:reset` task to reset the production db):
+
+        $ heroku pg:reset DATABASE
+        $ heroku run rails db:migrate
+        $ heroku run rails db:seed
+        $ heroku restart
+
 NOTE:
 - `*` - ignore step if it was done before
