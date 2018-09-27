@@ -2,7 +2,7 @@ require 'test_helper'
 
 class UsersLoginTest < ActionDispatch::IntegrationTest
   def setup
-    @user = users(:michael)
+    @user = users(:non_admin_user)
   end
 
   test "login form renders properly" do

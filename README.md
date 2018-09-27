@@ -15,6 +15,11 @@ by [Michael Hartl](http://www.michaelhartl.com/).
 
         $ rails db:migrate
 
+1. Create test data:
+
+        $ rails db:migrate:reset
+        $ rails db:seed
+
 1. Run the test suite:
 
         $ rails test
@@ -52,6 +57,13 @@ by [Michael Hartl](http://www.michaelhartl.com/).
 1. Migrate the production db:
 
         $ heroku run rails db:migrate
+
+1. Populate the production db with sample users (using the `pg:reset` task to reset the production db):
+
+        $ heroku pg:reset DATABASE
+        $ heroku run rails db:migrate
+        $ heroku run rails db:seed
+        $ heroku restart
 
 NOTE:
 - `*` - ignore step if it was done before
