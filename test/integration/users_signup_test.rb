@@ -36,8 +36,10 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
       } }
     end
     follow_redirect!
-    assert_template 'users/show'
-    assert_not flash[:success].nil?
-    assert logged_in?
+    assert_template 'static_pages/home'
+    assert_equal flash[:info], "Please check your email to activate your account."
+    assert_not logged_in?
+
+    # TODO: add tests for account activation
   end
 end
