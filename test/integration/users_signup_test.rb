@@ -1,6 +1,10 @@
 require 'test_helper'
 
 class UsersSignupTest < ActionDispatch::IntegrationTest
+  def setup
+    ActionMailer::Base.deliveries.clear
+  end
+
   test "signup form renders properly" do
     get signup_path
     assert_select 'form[action="/signup"]'
@@ -26,7 +30,8 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "signup with valid info" do
+  test "activate account and signup with valid info" do
+    get signup_path
     assert_difference 'User.count', 1 do
       post signup_path, params: { user: {
         name: "Valid User",
@@ -35,11 +40,31 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
         password_confirmation: "validpass"
       } }
     end
-    follow_redirect!
-    assert_template 'static_pages/home'
+    assert_equal 1, ActionMailer::Base.deliveries.size
+    user = assigns(:user)
+    assert_not user.activated?
     assert_equal flash[:info], "Please check your email to activate your account."
+
+    # Try to log in before activation
+    log_in_as(user)
+    assert_not logged_in? # TODO: User can login without activation. Fix it
+
+    # Invalid activation token
+    get edit_account_activation_path('invalid token', email: user.email)
+    assert_not logged_in?
+    follow_redirect!
+    assert_equal flash[:danger], "Invalid activation link"
+
+    # Valid token, wrong email
+    get edit_account_activation_path(user.activation_token, 'wrong')
     assert_not logged_in?
 
-    # TODO: add tests for account activation
+    # Valid activation token
+    get edit_account_activation_path(user.activation_token, email: user.email)
+    assert user.reload.activated?
+    follow_redirect!
+    assert_template "users/show"
+    assert_equal flash[:success], "Account activated!"
+    assert logged_in?
   end
 end
