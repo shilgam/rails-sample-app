@@ -20,7 +20,7 @@ class User < ApplicationRecord
 
   # Returns true if the given token matches the digest
   def authenticated?(attribute, token)
-    digest = self.send("#{attribute}_digest")
+    digest = send("#{attribute}_digest")
 
     return false if digest.nil?
 
