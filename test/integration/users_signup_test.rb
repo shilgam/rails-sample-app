@@ -66,5 +66,10 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     assert_template "users/show"
     assert_equal flash[:success], "Account activated!"
     assert logged_in?
+
+    # should not activate users who have already been activated
+    get edit_account_activation_path(user.activation_token, email: user.email)
+    assert_equal flash[:danger], "Invalid activation link"
+    assert_redirected_to root_url
   end
 end
