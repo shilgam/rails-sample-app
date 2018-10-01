@@ -32,6 +32,17 @@ class User < ApplicationRecord
     update_attribute(:remember_digest, nil)
   end
 
+  # Activates an account
+  def activate
+    update_attribute(:activated, true)
+    update_attribute(:activated_at, Time.zone.now)
+  end
+
+  # Sends activation email
+  def send_activation_email
+    UserMailer.account_activation(self).deliver_now
+  end
+
   class << self
     # Returns the hash digest of the given string
     def digest(unencrypted_password)
