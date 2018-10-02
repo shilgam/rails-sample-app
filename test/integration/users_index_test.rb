@@ -31,4 +31,16 @@ class UsersIndexTest < ActionDispatch::IntegrationTest
     get users_path
     assert_select "a", text: 'delete', count: 0
   end
+
+  test "index shows only activated users" do
+    log_in_as @non_admin
+    get users_path
+    first_page_of_users = User.paginate(page: 1)
+    user = first_page_of_users.first
+    assert_select "a[href=?]", user_path(user), text: user.name
+    user.update_attribute(:activated, false)
+
+    get users_path
+    assert_select "a[href=?]", user_path(user), count: 0
+  end
 end
