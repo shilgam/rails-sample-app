@@ -65,5 +65,11 @@ by [Michael Hartl](http://www.michaelhartl.com/).
         $ heroku run rails db:seed
         $ heroku restart
 
+1. Configure app to send email in production
+
+    1. Add SendGrid add-on to the app (This requires adding credit card info to Heroku account, but there is no charge when verifying. The "starter" plan limited to 400 emails a day but costs nothing):
+
+            $ heroku addons:create sendgrid:starter
+
 NOTE:
 - `*` - ignore step if it was done before
