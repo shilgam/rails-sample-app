@@ -12,3 +12,6 @@ Documentation:
 
 Style/EmptyMethod:
   Enabled: false
+
+Style/SymbolArray:
+  EnforcedStyle: brackets
