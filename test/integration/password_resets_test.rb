@@ -71,4 +71,20 @@ class PasswordResetsTest < ActionDispatch::IntegrationTest
     assert_equal flash[:success], "Password has been reset."
     assert logged_in?
   end
+
+  test "expired token" do
+    get new_password_reset_path
+    post password_resets_path,
+         params: { password_reset: { email: @user.email } }
+    user = assigns(:user) # Password reset form
+    user.update_attribute(:reset_sent_at, 3.hours.ago)
+    patch password_reset_path(user.reset_token),
+          params: { email: user.email,
+                    user: { password: "password",
+                            password_confirmation: "password" } }
+    assert_redirected_to new_password_reset_path
+    follow_redirect!
+    assert_equal flash[:danger], "Password reset has expired."
+    assert_not logged_in?
+  end
 end
