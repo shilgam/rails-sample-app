@@ -20,6 +20,7 @@ class PasswordResetsController < ApplicationController
     end
   end
 
+  # Submits to a corresponding update action
   def edit
   end
 

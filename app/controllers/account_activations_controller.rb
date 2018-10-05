@@ -1,5 +1,5 @@
 class AccountActivationsController < ApplicationController
-  # An edit action to activate accounts
+  # Toggles the user from "inactive" to "active"
   def edit
     user = User.find_by(email: params[:email])
     if user && !user.activated? && user.authenticated?(:activation, params[:id])
