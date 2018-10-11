@@ -1,4 +1,4 @@
-# Uncomment the following line on the cloud IDE. (Ignore the subsequent warning.)
+# Uncomment the following line on the cloud IDE. Ignore the subsequent warning.
 # notification :libnotify
 
 # Defines the matching rules for Guard.
@@ -14,7 +14,7 @@ guard :minitest, spring: "bin/rails test", all_on_start: false do
   end
   watch(%r{^app/views/([^/]*?)/.*\.html\.erb$}) do |matches|
     ["test/controllers/#{matches[1]}_controller_test.rb"] +
-    integration_tests(matches[1])
+      integration_tests(matches[1])
   end
   watch(%r{^app/helpers/(.*?)_helper\.rb$}) do |matches|
     integration_tests(matches[1])
@@ -34,7 +34,7 @@ guard :minitest, spring: "bin/rails test", all_on_start: false do
   end
   watch(%r{app/views/users/*}) do
     resource_tests('users') +
-    ['test/integration/microposts_interface_test.rb']
+      ['test/integration/microposts_interface_test.rb']
   end
 end
 

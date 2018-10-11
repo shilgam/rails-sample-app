@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class UsersEditTest < ActionDispatch::IntegrationTest
-
   def setup
     @user = users(:non_admin_user)
   end

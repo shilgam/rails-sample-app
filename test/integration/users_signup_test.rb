@@ -25,8 +25,10 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     assert_select "#error_explanation" do
       assert_select 'li:nth-child(1)', "Name can't be blank"
       assert_select 'li:nth-child(2)', "Email is invalid"
-      assert_select 'li:nth-child(3)', "Password confirmation doesn't match Password"
-      assert_select 'li:nth-child(4)', "Password is too short (minimum is 6 characters)"
+      assert_select 'li:nth-child(3)',
+                    "Password confirmation doesn't match Password"
+      assert_select 'li:nth-child(4)',
+                    "Password is too short (minimum is 6 characters)"
     end
   end
 
@@ -43,7 +45,8 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     assert_equal 1, ActionMailer::Base.deliveries.size
     user = assigns(:user)
     assert_not user.activated?
-    assert_equal flash[:info], "Please check your email to activate your account."
+    assert_equal flash[:info],
+                 "Please check your email to activate your account."
 
     # Try to log in before activation
     log_in_as(user, password: user.password)

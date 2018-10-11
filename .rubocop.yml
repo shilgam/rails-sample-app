@@ -1,16 +1,55 @@
 inherit_from:
   - .rubocop_default.yml
 
-Style/StringLiterals:
+AllCops:
+  Exclude:
+    - 'config/environments/*'
+    - 'db/*'
+    - 'config/**/*'
+    - "bin/*"
+
+Documentation:
+  Enabled: false
+
+Metrics/AbcSize:
+  # The ABC size is a calculated magnitude, so this number can be an Integer or
+  # a Float.
+  Max: 25
+
+Metrics/BlockLength:
+  Max: 50
+
+Metrics/MethodLength:
+  Max: 16
+
+Style/AndOr:
+  # Whether `and` and `or` are banned only in conditionals (conditionals)
+  # or completely (always).
+  EnforcedStyle: conditionals
+
+Style/ClassAndModuleChildren:
+  # Checks the style of children definitions at classes and modules.
+  #
+  # Basically there are two different styles:
+
+  # `nested` - have each child on a separate line
+  #   class Foo
+  #     class Bar
+  #     end
+  #   end
+  #
+  # `compact` - combine definitions as much as possible
+  #   class Foo::Bar
+  #   end
+  Enabled: false
+
+Style/EmptyMethod:
   Enabled: false
 
 Style/FrozenStringLiteralComment:
   Enabled: false
 
-Documentation:
-  Enabled: false
-
-Style/EmptyMethod:
+Style/StringLiterals:
   Enabled: false
 
 Style/SymbolArray:
