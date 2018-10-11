@@ -70,6 +70,7 @@ class PasswordResetsTest < ActionDispatch::IntegrationTest
     assert_redirected_to user
     assert_equal flash[:success], "Password has been reset."
     assert logged_in?
+    assert user.reload.reset_digest.nil?
   end
 
   test "expired token" do
