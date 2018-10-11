@@ -9,8 +9,8 @@ class UsersController < ApplicationController
   end
 
   def index
-    @users = User.activated(true).paginate(page: params[:page], per_page: 30).order('id ASC')
-
+    @users = User.activated(true).paginate(page: params[:page], per_page: 30)
+                 .order('id ASC')
   end
 
   def new
