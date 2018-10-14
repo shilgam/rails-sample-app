@@ -3,8 +3,7 @@ require 'test_helper'
 class MicropostTest < ActiveSupport::TestCase
   def setup
     @user = users(:non_admin_user)
-    # not idiomatically correct
-    @micropost = Micropost.new(content: "Lorum ipsum", user_id: @user.id)
+    @micropost = @user.microposts.build(content: "Lorum ipsum")
   end
 
   test "should be valid" do
