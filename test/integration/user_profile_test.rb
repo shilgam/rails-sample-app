@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class UsersProfileTest < ActionDispatch::IntegrationTest
+class UserProfileTest < ActionDispatch::IntegrationTest
   def setup
     @user = users(:non_admin_user)
     @other_user = users(:other_user)
