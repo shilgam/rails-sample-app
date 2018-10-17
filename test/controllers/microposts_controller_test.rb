@@ -2,6 +2,7 @@ require 'test_helper'
 
 class MicropostsControllerTest < ActionDispatch::IntegrationTest
   def setup
+    @user = users(:non_admin_user)
     @micropost = microposts(:most_resent)
   end
 
@@ -17,5 +18,13 @@ class MicropostsControllerTest < ActionDispatch::IntegrationTest
       delete micropost_path(@micropost)
     end
     assert_redirected_to login_url
+  end
+
+  test "create when logged in" do
+    log_in_as @user
+    assert_difference 'Micropost.count', 1 do
+      post microposts_path, params: { micropost: { content: "Lorem ipsum" } }
+    end
+    assert_redirected_to root_path
   end
 end
