@@ -67,7 +67,7 @@ class User < ApplicationRecord
 
   # Defines a proto-feed
   def feed
-    Micropost.where("user_id = ?", id)
+    microposts
   end
 
   class << self

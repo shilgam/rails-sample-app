@@ -9,13 +9,7 @@
   </aside>
     <div class="col-md-8">
       <section class="user_feed">
-        <h3>Micropost Feed</h3>
-        <% if @feed_items.any? %>
-          <ol class="microposts">
-            <%= render @feed_items %>
-          </ol>
-          <%= will_paginate @feed_items %>
-        <% end %>
+        <%= render 'shared/feed' %>
       </section>
     </div>
 </div>
