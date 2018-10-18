@@ -25,5 +25,12 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
       assert_select 'h1', @user.name
       assert_select 'a[href=?]', user_path(@user), text: "view my profile"
     end
+
+    # feed
+    assert_select '.user_feed' do
+      assert_select 'h3', "Micropost Feed"
+      assert_select '.microposts'
+      assert_select '.pagination'
+    end
   end
 end
