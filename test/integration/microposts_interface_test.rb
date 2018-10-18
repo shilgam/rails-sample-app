@@ -7,9 +7,18 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
 
   test "micropost interface" do
     log_in_as @user
+
+    # Invalid submission
     get root_path
+    assert_no_difference 'Micropost.count' do
+      post microposts_path, params: { micropost: { content: '' } }
+    end
+    assert_select "#error_explanation" do
+      assert_select 'li:nth-child(1)', "Content can't be blank"
+    end
 
     # Valid submission
+    get root_path
     content = "Valid micropost content"
     assert_difference 'Micropost.count', 1 do
       post microposts_path, params: { micropost: { content: content } }
