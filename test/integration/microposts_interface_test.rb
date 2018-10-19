@@ -48,4 +48,46 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_equal flash[:success], "Micropost created!"
   end
+
+  test "delete micropost" do
+    log_in_as @user
+
+    # delete post created by user
+
+    # in the Home page
+    content = "post created by me"
+    @micropost = @user.microposts.create(content: content)
+    get root_path
+    assert_select '.user_feed' do
+      assert_select "#micropost-#{@micropost.id}" do
+        assert_select '.content', @micropost.content
+        assert_select 'a[data-method=?]', "delete"
+        assert_select 'a[data-confirm=?]', "You sure?"
+      end
+    end
+    assert_difference 'Micropost.count', -1 do
+      delete micropost_path(@micropost)
+    end
+    assert_redirected_to root_url
+    follow_redirect!
+    assert_equal flash[:success], "Micropost deleted"
+
+    # in the user's profile page
+    @micropost = @user.microposts.create(content: content)
+    get user_path(@user)
+    assert_select '.user_feed' do
+      assert_select "#micropost-#{@micropost.id}" do
+        assert_select '.content', @micropost.content
+        assert_select 'a[data-method=?]', "delete"
+        assert_select 'a[data-confirm=?]', "You sure?"
+      end
+    end
+    assert_difference 'Micropost.count', -1 do
+      delete micropost_path(@micropost),
+             headers: { "HTTP_REFERER" => user_url(@user) }
+    end
+    assert_redirected_to user_path(@user)
+    follow_redirect!
+    assert_equal flash[:success], "Micropost deleted"
+  end
 end
