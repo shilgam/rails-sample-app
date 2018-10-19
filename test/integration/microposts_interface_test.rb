@@ -7,6 +7,27 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
 
   test "micropost interface" do
     log_in_as @user
+    get root_path
+
+    assert_select 'form#new_micropost' do
+      assert_select 'textarea[placeholder=?]', "Compose new micropost..."
+      assert_select '.btn[value=?]', "Post"
+    end
+    assert_select '.user_info' do
+      assert_select 'h1', @user.name
+      assert_select 'a[href=?]', user_path(@user), text: "view my profile"
+    end
+
+    # feed
+    assert_select '.user_feed' do
+      assert_select 'h3', "Micropost Feed"
+      assert_select '.microposts'
+      assert_select '.pagination'
+    end
+  end
+
+  test "create mircopost" do
+    log_in_as @user
 
     # Invalid submission
     get root_path
@@ -26,20 +47,5 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
     follow_redirect!
     assert_equal flash[:success], "Micropost created!"
-    assert_select 'form#new_micropost' do
-      assert_select 'textarea[placeholder=?]', "Compose new micropost..."
-      assert_select '.btn[value=?]', "Post"
-    end
-    assert_select '.user_info' do
-      assert_select 'h1', @user.name
-      assert_select 'a[href=?]', user_path(@user), text: "view my profile"
-    end
-
-    # feed
-    assert_select '.user_feed' do
-      assert_select 'h3', "Micropost Feed"
-      assert_select '.microposts'
-      assert_select '.pagination'
-    end
   end
 end
