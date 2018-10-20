@@ -8,7 +8,7 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
   test "micropost interface" do
     log_in_as @user
     get root_path
-
+    assert_select '.user_feed .pagination'
     assert_select 'form#new_micropost' do
       assert_select 'textarea[placeholder=?]', "Compose new micropost..."
       assert_select '.btn[value=?]', "Post"
@@ -34,7 +34,7 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
     assert_no_difference 'Micropost.count' do
       post microposts_path, params: { micropost: { content: '' } }
     end
-    assert_select "#error_explanation" do
+    assert_select ".new_micropost #error_explanation" do
       assert_select 'li:nth-child(1)', "Content can't be blank"
     end
 
@@ -47,12 +47,11 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
     follow_redirect!
     assert_equal flash[:success], "Micropost created!"
+    assert_match content, response.body
   end
 
   test "delete micropost" do
     log_in_as @user
-
-    # delete post created by user
 
     # in the Home page
     content = "post created by me"
@@ -89,5 +88,12 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
     assert_redirected_to user_path(@user)
     follow_redirect!
     assert_equal flash[:success], "Micropost deleted"
+
+    # Visit different user (no delete links)
+    get user_path(users(:other_user))
+    assert_select '.user_feed .microposts' do
+      assert_select '.content'
+      assert_select 'a', text: 'delete', count: 0
+    end
   end
 end
