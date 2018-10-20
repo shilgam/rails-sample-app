@@ -15,7 +15,6 @@ non_admin_user:
   activated: true
   activated_at: <%= Time.zone.now %>
 
-
 other_user:
   name: Other User
   email: other-user@example.com
@@ -23,6 +22,12 @@ other_user:
   activated: true
   activated_at: <%= Time.zone.now %>
 
+guest:
+  name: Guest User
+  email: guest-user@example.com
+  password_digest: <%= User.digest('password') %>
+  activated: true
+  activated_at: <%= Time.zone.now %>
 
 <% 99.times do |n| %>
 user_<%= n %>:

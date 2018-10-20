@@ -18,7 +18,7 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
       assert_select 'a[href=?]', user_path(@user), text: "view my profile"
     end
 
-    # feed
+    # Feed
     assert_select '.user_feed' do
       assert_select 'h3', "Micropost Feed"
       assert_select '.microposts'
@@ -53,7 +53,7 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
   test "delete micropost" do
     log_in_as @user
 
-    # in the Home page
+    # Home page
     content = "post created by me"
     @micropost = @user.microposts.create(content: content)
     get root_path
@@ -71,7 +71,7 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_equal flash[:success], "Micropost deleted"
 
-    # in the user's profile page
+    # User's profile page
     @micropost = @user.microposts.create(content: content)
     get user_path(@user)
     assert_select '.user_feed' do
@@ -94,6 +94,34 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
     assert_select '.user_feed .microposts' do
       assert_select '.content'
       assert_select 'a', text: 'delete', count: 0
+    end
+  end
+
+  test "micropost sidebar count" do
+    # Home page
+    log_in_as @user
+    get root_url
+    assert_select '.user_info' do
+      assert_select '#microposts_count', '33 microposts'
+    end
+
+    @guest = users(:guest)
+    log_in_as @guest
+    get root_url
+    assert_select '.user_info' do
+      assert_select '#microposts_count', '0 microposts'
+    end
+    @guest.microposts.create(content: "first micrpost")
+    get root_url
+    assert_select '.user_info' do
+      assert_select '#microposts_count', '1 micropost'
+    end
+
+    # User's profile page
+    log_in_as @user
+    get user_path(@user)
+    assert_select '.user_feed' do
+      assert_select 'h3#microposts_count', 'Microposts (33)'
     end
   end
 end
