@@ -65,6 +65,11 @@ class User < ApplicationRecord
     reset_sent_at < 2.hours.ago
   end
 
+  # Defines a proto-feed
+  def feed
+    microposts
+  end
+
   class << self
     # Returns the hash digest of the given string
     def digest(unencrypted_password)
