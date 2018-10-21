@@ -12,6 +12,7 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
     assert_select 'form#new_micropost' do
       assert_select 'textarea[placeholder=?]', "Compose new micropost..."
       assert_select '.btn[value=?]', "Post"
+      assert_select 'input[type=file][id=micropost_picture]'
     end
     assert_select '.user_info' do
       assert_select 'h1', @user.name
@@ -41,13 +42,24 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
     # Valid submission
     get root_path
     content = "Valid micropost content"
+    picture = fixture_file_upload('test/fixtures/rails.png', 'image/png')
     assert_difference 'Micropost.count', 1 do
-      post microposts_path, params: { micropost: { content: content } }
+      post microposts_path, params: { micropost:
+        { content: content,
+          picture: picture } }
     end
+
+    @micropost = assigns(:micropost)
     assert_redirected_to root_url
     follow_redirect!
     assert_equal flash[:success], "Micropost created!"
-    assert_match content, response.body
+    assert @micropost.picture?
+    assert_select '.user_feed' do
+      assert_select "#micropost-#{@micropost.id}" do
+        assert_select '.content', content
+        assert_select '.content img'
+      end
+    end
   end
 
   test "delete micropost" do
