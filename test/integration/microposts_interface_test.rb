@@ -39,10 +39,25 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
       assert_select 'li:nth-child(1)', "Content can't be blank"
     end
 
+    # Invalid file extention
+    get root_path
+    content = "Valid micropost content"
+    picture = fixture_file_upload('test/fixtures/files/doc.pdf')
+    assert_no_difference 'Micropost.count' do
+      post microposts_path, params: { micropost:
+        { content: content,
+          picture: picture } }
+    end
+    assert_select ".new_micropost #error_explanation" do
+      assert_select 'li:nth-child(1)',
+                    'Picture You are not allowed to upload "pdf" files, ' \
+                    'allowed types: jpg, jpeg, gif, png'
+    end
+
     # Valid submission
     get root_path
     content = "Valid micropost content"
-    picture = fixture_file_upload('test/fixtures/rails.png', 'image/png')
+    picture = fixture_file_upload('test/fixtures/files/rails.png', 'image/png')
     assert_difference 'Micropost.count', 1 do
       post microposts_path, params: { micropost:
         { content: content,
