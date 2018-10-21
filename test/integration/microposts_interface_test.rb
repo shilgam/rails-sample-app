@@ -54,6 +54,20 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
                     'allowed types: jpg, jpeg, gif, png'
     end
 
+    # Invalid file size
+    get root_path
+    content = "Valid micropost content"
+    picture = fixture_file_upload('test/fixtures/files/space_5.5MB.jpg')
+    assert_no_difference 'Micropost.count' do
+      post microposts_path, params: { micropost:
+        { content: content,
+          picture: picture } }
+    end
+    assert_select ".new_micropost #error_explanation" do
+      assert_select 'li:nth-child(1)',
+                    'Picture should be less than 5MB'
+    end
+
     # Valid submission
     get root_path
     content = "Valid micropost content"
