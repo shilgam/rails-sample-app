@@ -20,6 +20,10 @@ by [Michael Hartl](http://www.michaelhartl.com/).
         $ rails db:migrate:reset
         $ rails db:seed
 
+1. Install [ImageMagick](https://imagemagick.org) on your local machine for image resizing:
+
+        $ brew install imagemagick
+
 1. Run the test suite:
 
         $ rails test
