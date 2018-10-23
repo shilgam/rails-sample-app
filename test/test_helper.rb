@@ -31,3 +31,9 @@ class ActiveSupport::TestCase
     end
   end
 end
+
+# run after suite
+Minitest.after_run do
+  seconds = 60
+  CarrierWave.clean_cached_files!(seconds)
+end
