@@ -83,6 +83,11 @@ by [Michael Hartl](http://www.michaelhartl.com/).
 
     1. Create an S3 bucket (with a name of your choice) using the [AWS Console](https://console.aws.amazon.com/s3), and then grant read and write permission to the user created in the previous step.
 
+    1. Define Heroku ENV variables:
 
+            $ heroku config:set S3_ACCESS_KEY=<access key>
+            $ heroku config:set S3_SECRET_KEY=<secret key>
+            $ heroku config:set S3_BUCKET=<bucket name>
+            $ heroku config:set S3_REGION=<bucket region>
 NOTE:
 - `*` - ignore step if it was done before
