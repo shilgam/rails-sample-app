@@ -75,5 +75,14 @@ by [Michael Hartl](http://www.michaelhartl.com/).
 
             $ heroku addons:create sendgrid:starter
 
+1. Configure Amazon S3 cloud to store images (Note: S3 is a paid service, but the storage needed to set up this app costs less than a cent per month)
+
+    1. Sign up for an [Amazon Web Services](http://aws.amazon.com/) account
+
+    1. Create a user via [AWS Identity and Access Management (IAM)](https://aws.amazon.com/iam/) and record the access key and secret key.
+
+    1. Create an S3 bucket (with a name of your choice) using the [AWS Console](https://console.aws.amazon.com/s3), and then grant read and write permission to the user created in the previous step.
+
+
 NOTE:
 - `*` - ignore step if it was done before
