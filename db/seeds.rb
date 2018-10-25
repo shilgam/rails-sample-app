@@ -1,6 +1,8 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
+# This file should contain all the record creation needed to seed the database
+# with its default values. The data can then be loaded with the
+# rails db:seed command (or created alongside the database with db:setup).
 
+# Users
 User.create!(name:  "Example User",
              email: "example@railstutorial.org",
              password:              "foobar",
@@ -21,8 +23,16 @@ User.create!(name:  "Example User",
                activated_at: Time.zone.now)
 end
 
+# Microposts
 users = User.order(:created_at).take(6)
 50.times do
   content = Faker::Lorem.sentence(5)
-  users.each { |user| user.microposts.create!(content: content)}
+  users.each { |user| user.microposts.create!(content: content) }
 end
+
+# Following relationships
+users = User.all
+following = users[4..41]
+followers = users[3..51]
+User.first.followers << followers
+User.first.following << following
