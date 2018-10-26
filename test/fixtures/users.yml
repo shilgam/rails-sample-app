@@ -22,6 +22,20 @@ other_user:
   activated: true
   activated_at: <%= Time.zone.now %>
 
+follower:
+  name: Follower User
+  email: follower-user@example.com
+  password_digest: <%= User.digest('password') %>
+  activated: true
+  activated_at: <%= Time.zone.now %>
+
+superstar:
+  name: Superstar
+  email: superstar@example.com
+  password_digest: <%= User.digest('password') %>
+  activated: true
+  activated_at: <%= Time.zone.now %>
+
 guest:
   name: Guest User
   email: guest-user@example.com
