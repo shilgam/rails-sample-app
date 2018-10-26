@@ -25,6 +25,9 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
       assert_select '.microposts'
       assert_select '.pagination'
     end
+
+    # follower stats
+    assert_select 'section .stats'
   end
 
   test "create mircopost" do
