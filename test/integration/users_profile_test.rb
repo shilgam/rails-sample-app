@@ -22,10 +22,10 @@ class UsersProfileTest < ActionDispatch::IntegrationTest
     get user_path(@user)
     assert_select 'section .stats' do
       assert_select "a[href=?]", following_user_path(@user)
-      assert_select "#following", "0"
+      assert_select "#following", "1"
 
       assert_select "a[href=?]", followers_user_path(@user)
-      assert_select "#followers", "0"
+      assert_select "#followers", "1"
     end
   end
 end
