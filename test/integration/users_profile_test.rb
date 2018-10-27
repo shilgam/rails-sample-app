@@ -28,4 +28,16 @@ class UsersProfileTest < ActionDispatch::IntegrationTest
       assert_select "#followers", "1"
     end
   end
+
+  test "follow / unfollow buttons" do
+    # visit following user page
+    @star = users(:superstar)
+    get user_path(@star)
+    assert_select '#follow_form', count: 0
+
+    # visit follower's page
+    @star = users(:superstar)
+    get user_path(@star)
+    assert_select '#follow_form', count: 0
+  end
 end
