@@ -76,6 +76,13 @@ class FollowingTest < ActionDispatch::IntegrationTest
     assert_redirected_to @other
   end
 
+  test "should follow a user with Ajax" do
+    assert_difference '@user.following.count', 1 do
+      post relationships_path, xhr: true, params: { followed_id: @other.id }
+    end
+    assert_response :success
+  end
+
   test "should unfollow a user" do
     @user.follow(@other)
     relationship = @user.active_relationships.find_by(followed_id: @other.id)
@@ -83,5 +90,14 @@ class FollowingTest < ActionDispatch::IntegrationTest
       delete relationship_path(relationship)
     end
     assert_redirected_to @other
+  end
+
+  test "should unfollow a user with Ajax" do
+    @user.follow(@other)
+    relationship = @user.active_relationships.find_by(followed_id: @other.id)
+    assert_difference '@user.following.count', -1 do
+      delete relationship_path(relationship), xhr: true
+    end
+    assert_response :success
   end
 end
