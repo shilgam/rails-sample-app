@@ -3,18 +3,18 @@ require 'test_helper'
 class FollowingTest < ActionDispatch::IntegrationTest
   def setup
     @user = users(:non_admin_user)
+    @other = users(:other_user)
     log_in_as(@user)
   end
 
   test "follow button" do
-    @unknown = users(:guest)
-    get user_path(@unknown)
+    get user_path(@other)
     assert_select '#follow_form .btn[value=?]', "Follow"
   end
 
   test "unfollow button" do
-    @star = users(:superstar)
-    get user_path(@star)
+    @user.follow(@other)
+    get user_path(@other)
     assert_select '#follow_form .btn[value=?]', "Unfollow"
   end
 
@@ -23,8 +23,7 @@ class FollowingTest < ActionDispatch::IntegrationTest
     assert_select '#follow_form', count: 0
   end
 
-  test "following/followers page" do
-    @other = users(:other_user)
+  test "following page" do
     @star = users(:superstar)
     @other.follow(@star)
 
@@ -49,8 +48,11 @@ class FollowingTest < ActionDispatch::IntegrationTest
         assert_select "a[href=?]", user_path(user)
       end
     end
+  end
 
-    # followers page
+  test "followers page" do
+    @star = users(:superstar)
+    @other.follow(@star)
     get followers_user_path(@star)
     assert_select 'section.user_info' do
       assert_select '.gravatar'
@@ -65,5 +67,21 @@ class FollowingTest < ActionDispatch::IntegrationTest
         assert_select "a[href=?]", user_path(user)
       end
     end
+  end
+
+  test "should follow a user" do
+    assert_difference '@user.following.count', 1 do
+      post relationships_path, params: { followed_id: @other.id }
+    end
+    assert_redirected_to @other
+  end
+
+  test "should unfollow a user" do
+    @user.follow(@other)
+    relationship = @user.active_relationships.find_by(followed_id: @other.id)
+    assert_difference '@user.following.count', -1 do
+      delete relationship_path(relationship)
+    end
+    assert_redirected_to @other
   end
 end
