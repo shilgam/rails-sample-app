@@ -17,4 +17,27 @@ class UsersProfileTest < ActionDispatch::IntegrationTest
       assert_match micropost.content, response.body
     end
   end
+
+  test "follower stats" do
+    get user_path(@user)
+    assert_select 'section .stats' do
+      assert_select "a[href=?]", following_user_path(@user)
+      assert_select "#following", "1"
+
+      assert_select "a[href=?]", followers_user_path(@user)
+      assert_select "#followers", "0"
+    end
+  end
+
+  test "follow / unfollow buttons" do
+    # visit following user page
+    @star = users(:superstar)
+    get user_path(@star)
+    assert_select '#follow_form', count: 0
+
+    # visit follower's page
+    @star = users(:superstar)
+    get user_path(@star)
+    assert_select '#follow_form', count: 0
+  end
 end
