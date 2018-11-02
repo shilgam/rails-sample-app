@@ -25,7 +25,7 @@ class UsersProfileTest < ActionDispatch::IntegrationTest
       assert_select "#following", "1"
 
       assert_select "a[href=?]", followers_user_path(@user)
-      assert_select "#followers", "1"
+      assert_select "#followers", "0"
     end
   end
 
