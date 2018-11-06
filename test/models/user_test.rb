@@ -101,4 +101,29 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.following?(@other)
     assert_not @other.followers.include?(@user)
   end
+
+  test "feed should have the right posts" do
+    @user = users(:non_admin_user)
+    @star = users(:elon_musk)
+    @other = users(:other_user)
+    @user.follow(@star)
+    @user.microposts.create!(content: "post from self")
+    @star.microposts.create!(content: "post from star")
+    @other.microposts.create!(content: "post from other user")
+
+    # Posts from followed user
+    @star.microposts.each do |post|
+      assert @user.feed.include?(post)
+    end
+
+    # Posts from self
+    @user.microposts.each do |post|
+      assert @user.feed.include?(post)
+    end
+
+    # Posts from unfollowed user
+    @other.microposts.each do |post|
+      assert_not @user.feed.include?(post)
+    end
+  end
 end

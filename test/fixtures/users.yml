@@ -29,6 +29,13 @@ superstar:
   activated: true
   activated_at: <%= Time.zone.now %>
 
+elon_musk:
+  name: Elon Musk
+  email: emusk@example.com
+  password_digest: <%= User.digest('password') %>
+  activated: true
+  activated_at: <%= Time.zone.now %>
+
 guest:
   name: Guest User
   email: guest-user@example.com
